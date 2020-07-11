@@ -6,8 +6,11 @@ import ru.job4j.dream.model.Post;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Store {
+    private static AtomicInteger POST_ID = new AtomicInteger(4);
+
     private static final Store INST = new Store();
 
     private Map<Integer, Post> posts = new ConcurrentHashMap<>();
@@ -21,6 +24,11 @@ public class Store {
         candidates.put(1, new Candidate(1, "Roman junior"));
         candidates.put(2, new Candidate(2, "Ivan middle"));
         candidates.put(3, new Candidate(3, "Petr senior"));
+    }
+
+    public void save(Post post) {
+        post.setId(POST_ID.incrementAndGet());
+        posts.put(post.getId(), post);
     }
 
     public static Store instOf() {
