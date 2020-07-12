@@ -29,13 +29,25 @@ public class Store {
     }
 
     public void savePost(Post post) {
-        post.setId(POST_ID.incrementAndGet());
+        if (post.getId() == 0) {
+            post.setId(POST_ID.incrementAndGet());
+        }
         this.posts.put(post.getId(), post);
     }
 
+    public Post findById(int id) {
+        return this.posts.get(id);
+    }
+
     public void saveCandidate(Candidate candidate) {
-        candidate.setId(CANDIDATE_ID.incrementAndGet());
+        if (candidate.getId() == 0) {
+            candidate.setId(CANDIDATE_ID.incrementAndGet());
+        }
         this.candidates.put(candidate.getId(), candidate);
+    }
+
+    public Candidate findCandidateById(int id) {
+        return this.candidates.get(id);
     }
 
     public static Store instOf() {

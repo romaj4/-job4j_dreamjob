@@ -21,7 +21,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>CandidateServlet</servlet-name>
-        <url-pattern>/post/savecandidate</url-pattern>
+        <url-pattern>/candidate/savecandidate</url-pattern>
     </servlet-mapping>
 
 </web-app>
