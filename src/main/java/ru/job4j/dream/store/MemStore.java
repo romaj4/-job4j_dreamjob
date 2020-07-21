@@ -2,6 +2,7 @@ package ru.job4j.dream.store;
 
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
+import ru.job4j.dream.model.User;
 
 import java.util.Collection;
 import java.util.Map;
@@ -46,8 +47,23 @@ public class MemStore implements Store {
         this.candidates.put(candidate.getId(), candidate);
     }
 
+    @Override
+    public void saveUser(User user) {
+
+    }
+
     public Candidate findCandidateById(int id) {
         return this.candidates.get(id);
+    }
+
+    @Override
+    public User findUserByName(String name) {
+        return null;
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return null;
     }
 
     public static MemStore instOf() {
@@ -60,5 +76,10 @@ public class MemStore implements Store {
 
     public Collection<Candidate> findAllCandidates() {
         return candidates.values();
+    }
+
+    @Override
+    public Collection<User> findAllUsers() {
+        return null;
     }
 }

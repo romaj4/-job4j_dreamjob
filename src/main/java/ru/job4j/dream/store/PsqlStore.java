@@ -3,6 +3,7 @@ package ru.job4j.dream.store;
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
+import ru.job4j.dream.model.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -84,11 +85,48 @@ public class PsqlStore implements Store {
     }
 
     @Override
+    public Collection<User> findAllUsers() {
+        List<User> users = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM users")
+        ) {
+            try (ResultSet resultSet = ps.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(new User(resultSet.getInt("id"), resultSet.getString("name"),
+                            resultSet.getString("email"), resultSet.getString("password")));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    @Override
     public void saveCandidate(Candidate candidate) {
         if (candidate.getId() == 0) {
             this.createCandidate(candidate);
         } else {
             updateCandidate(candidate);
+        }
+    }
+
+    @Override
+    public void saveUser(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("INSERT INTO users(name, email, password) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.execute();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    user.setId(id.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -193,5 +231,43 @@ public class PsqlStore implements Store {
             e.printStackTrace();
         }
         return candidate;
+    }
+
+    @Override
+    public User findUserByName(String name) {
+        User user = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM users where name = ?")
+        ) {
+            ps.setString(1, name);
+            try (ResultSet set = ps.executeQuery()) {
+                if (set.next()) {
+                    user = new User(set.getInt("id"), set.getString("name"),
+                            set.getString("email"), set.getString("password"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        User user = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM users where email = ?")
+        ) {
+            ps.setString(1, email);
+            try (ResultSet set = ps.executeQuery()) {
+                if (set.next()) {
+                    user = new User(set.getInt("id"), set.getString("name"),
+                            set.getString("email"), set.getString("password"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }
