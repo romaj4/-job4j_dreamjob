@@ -18,10 +18,24 @@
             }
             return true;
         }
+
+        function addRow() {
+            if (validate()) {
+                $('#userTable tr:last').after(
+                    '<tr>' +
+                    '<td>' + $('#name').val() + '</td>' +
+                    '<td>' + $('#surname').val() + '</td>' +
+                    '<td>' + $('#sex').val() + '</td>' +
+                    '<td>' + $('#desc').val() + '</td>' +
+                    '</tr>'
+                );
+                return true;
+            }
+            return false;
+        }
     </script>
 </head>
 <body>
-
 <div class="container pt-3">
     <form id="form-user" action="" method="post">
         <div class="form-group">
@@ -43,12 +57,12 @@
             <label for="desc">Description:</label>
             <textarea class="form-control" rows="5" title="Description" id="desc" name="desc"></textarea>
         </div>
-        <button type="submit" class="btn btn-default" onclick="return validate();">Submit</button>
+        <button type="reset" class="btn btn-default" onclick="return addRow();">Submit</button>
     </form>
 </div>
 <p></p>
 <div class="container pt-3">
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="userTable">
         <thead>
         <tr>
             <th>Name</th>
@@ -58,27 +72,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>Roman</td>
-            <td>Korolchuk</td>
-            <td>Male</td>
-            <td>Spb, 34 y.o.</td>
-        </tr>
-        <tr>
-            <td>Ivan</td>
-            <td>Ivanov</td>
-            <td>Male</td>
-            <td>Moscow, 34 y.o.</td>
-        </tr>
-        <tr>
-            <td>Petr</td>
-            <td>Petrov</td>
-            <td>Male</td>
-            <td>Spb, 34 y.o.</td>
-        </tr>
         </tbody>
     </table>
 </div>
-
 </body>
 </html>
