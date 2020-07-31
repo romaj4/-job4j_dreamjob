@@ -24,9 +24,9 @@ public class MemStore implements Store {
         posts.put(1, new Post(1, "Junior Java Job"));
         posts.put(2, new Post(2, "Middle Java Job"));
         posts.put(3, new Post(3, "Senior Java Job"));
-        candidates.put(1, new Candidate(1, "Roman junior"));
-        candidates.put(2, new Candidate(2, "Ivan middle"));
-        candidates.put(3, new Candidate(3, "Petr senior"));
+        candidates.put(1, new Candidate(1, "Roman junior", 1));
+        candidates.put(2, new Candidate(2, "Ivan middle", 2));
+        candidates.put(3, new Candidate(3, "Petr senior", 3));
     }
 
     public void savePost(Post post) {

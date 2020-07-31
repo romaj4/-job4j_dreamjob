@@ -75,7 +75,7 @@ public class PsqlStore implements Store {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    candidates.add(new Candidate(it.getInt("id"), it.getString("name")));
+                    candidates.add(new Candidate(it.getInt("id"), it.getString("name"), it.getInt("cityId")));
                 }
             }
         } catch (Exception e) {
@@ -158,9 +158,10 @@ public class PsqlStore implements Store {
 
     private Candidate createCandidate(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate(name) VALUES (?)", PreparedStatement.RETURN_GENERATED_KEYS)
+             PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate(name, cityId) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
+            ps.setInt(2, candidate.getCityId());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -224,7 +225,7 @@ public class PsqlStore implements Store {
             ps.setInt(1, id);
             try (ResultSet set = ps.executeQuery()) {
                 if (set.next()) {
-                    candidate = new Candidate(set.getInt("id"), set.getString("name"));
+                    candidate = new Candidate(set.getInt("id"), set.getString("name"), set.getInt("cityId"));
                 }
             }
         } catch (Exception e) {

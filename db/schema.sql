@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS post (
 
 CREATE TABLE IF NOT EXISTS candidate (
    id SERIAL PRIMARY KEY,
-   name TEXT
+   name TEXT,
+   cityId INT REFERENCES city(id)
 );
 
 CREATE TABLE IF NOT EXISTS users(
@@ -13,4 +14,9 @@ CREATE TABLE IF NOT EXISTS users(
     name VARCHAR(255) UNIQUE,
     email VARCHAR(255) UNIQUE,
     password VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS city(
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255)
 );
