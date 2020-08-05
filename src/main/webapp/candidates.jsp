@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
+<%@ page import="ru.job4j.dream.store.PsqlStore" %>
+<%@ page import="java.util.Collection" %>
+<%@ page import="ru.job4j.dream.model.Candidate" %>
 
 <!doctype html>
 <html lang="en">
@@ -60,19 +63,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${candidates}" var="candidate">
-                        <tr>
-                            <td>
-                                <a href='<c:url value="/candidate/edit.jsp?id=${candidate.id}"/>'>
-                                    <i class="fa fa-edit mr-3"></i>
-                                </a>
-                                <c:out value="${candidate.name}"/>
-                            </td>
-                            <td>
-                                <c:out value="${candidate.cityId}"/>
-                            </td>
-                        </tr>
-                    </c:forEach>
+                    <% for (Candidate can : (Collection<Candidate>) request.getAttribute("candidates")) { %>
+                    <tr>
+                        <td>
+                            <a href="<%=request.getContextPath()%>/candidate/edit.jsp?id=<%=can.getId()%>">
+                                <i class="fa fa-edit mr-3"></i>
+                                    <%= can.getName() %>
+                        </td>
+                        <td>
+                            <%=PsqlStore.instOf().findCityById(can.getId()).getName() %>
+                        </td>
+                        <% } %>
+                    </tr>
+
                     </tbody>
                 </table>
             </div>

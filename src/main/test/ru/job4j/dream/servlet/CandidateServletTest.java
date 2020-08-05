@@ -31,6 +31,7 @@ public class CandidateServletTest extends TestCase {
         HttpServletResponse resp = mock(HttpServletResponse.class);
         when(req.getParameter("name")).thenReturn("Roman Korolchuk");
         when(req.getParameter("id")).thenReturn("0");
+        when(req.getParameter("cityId")).thenReturn("1");
         new CandidateServlet().doPost(req, resp);
         assertEquals(storeStub.findAllCandidates().iterator().next().getName(), "Roman Korolchuk");
     }
